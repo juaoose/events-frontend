@@ -23,7 +23,7 @@
             <v-card-subtitle v-text="event.description"></v-card-subtitle>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="showDetail(event)" text>Get ticket</v-btn>
+              <v-btn @click="showDetail(event)" text>Details</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

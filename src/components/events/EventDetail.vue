@@ -7,7 +7,7 @@
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         height="200px"
       >
-        <v-card-title>Confirm purchase</v-card-title>
+        <v-card-title>{{eventProp.title}}</v-card-title>
       </v-img>
       <br />
       <v-card-subtitle>
@@ -24,7 +24,7 @@
       </v-card-subtitle>
       <v-card-text>The cost of the ticket is {{eventProp.price}} USD</v-card-text>
       <v-divider />
-      <v-card-actions>
+      <v-card-actions v-if="isLoggedIn">
         <v-spacer></v-spacer>
         <v-btn color="primary" text @click="purchase(eventProp)">Buy</v-btn>
       </v-card-actions>
@@ -56,12 +56,9 @@ export default {
         }
       },
     },
-  },
-  data() {
-    return {
-      event: {},
-      enabled: false,
-    };
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    },
   },
   methods: {
     purchase(event) {
