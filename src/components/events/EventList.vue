@@ -38,13 +38,16 @@
                 <v-row cols="12" sm="6" md="4">
                   <v-text-field type="number" v-model="editedItem.price" label="Price"></v-text-field>
                 </v-row>
+                <v-row cols="12" sm="6" md="4">
+                  <v-file-input accept="image/*" @change="handleImage" label="Image"></v-file-input>
+                </v-row>
               </v-container>
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn :disabled="loadingImage" color="blue darken-1" text @click="save">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -68,6 +71,7 @@
 export default {
   data: () => ({
     dialog: false,
+    loadingImage: false,
     headers: [
       {
         text: 'Title',
@@ -90,7 +94,8 @@ export default {
       maxCapacity: 0,
       price: 0,
       organizer: 'LaMonta',
-      image: ''
+      image: '',
+      encodedImage: ''
     },
     defaultItem: {
       title: '',
@@ -99,7 +104,8 @@ export default {
       maxCapacity: 0,
       price: 0,
       organizer: 'LaMonta',
-      image: ''
+      image: '',
+      encodedImage: ''
     }
   }),
 
@@ -125,7 +131,6 @@ export default {
   methods: {
     editItem (item) {
       this.editedIndex = 1
-      console.log(this.editedIndex)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
@@ -142,9 +147,7 @@ export default {
         this.editedIndex = -1
       })
     },
-
     save () {
-      console.log(this.editedItem)
       if (this.editedIndex === 1) {
         this.$store.dispatch('updateEvent', this.editedItem)
       } else {
@@ -152,13 +155,24 @@ export default {
       }
       this.close()
     },
-
     createDate (epoch) {
       return new Date(epoch * 1000).toLocaleDateString('es-CO')
     },
-
-    seeResults (input) {
-      this.$router.push({ name: 'results', params: { eventId: input.id } })
+    async handleImage (event, file) {
+      this.loadingImage = true
+      const image = await this.readFileAsync(event)
+      this.editedItem.encodedImage = image
+      this.loadingImage = false
+    },
+    readFileAsync (file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+          resolve(reader.result)
+        }
+        reader.onerror = reject
+        reader.readAsBinaryString(file)
+      })
     }
   }
 }

@@ -53,7 +53,10 @@ export default {
             Authorization: `Bearer ${accessToken}`
           }
         })
-        event.id = response.data.id
+        if (response.data.image && response.data.id) {
+          event.image = response.data.image
+          event.id = response.data.id
+        }
         context.commit('createEvent', event)
       } catch (error) {
         console.log(error)
@@ -62,11 +65,14 @@ export default {
     async updateEvent (context, event) {
       const accessToken = localStorage.getItem('access_token')
       try {
-        await axios.put(EVENTS_BASE_PATH + event.id, event, {
+        const response = await axios.put(EVENTS_BASE_PATH + event.id, event, {
           headers: {
             Authorization: `Bearer ${accessToken}`
           }
         })
+        if (response.data.image) {
+          event.image = response.data.image
+        }
         context.commit('editEvent', event)
       } catch (error) {
         console.log(error)
