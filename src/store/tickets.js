@@ -30,7 +30,9 @@ export default {
             Authorization: `Bearer ${accessToken}`
           }
         })
-        context.commit('retrieveTickets', response.data)
+        if (response.data) {
+          context.commit('retrieveTickets', response.data)
+        }
       } catch (error) {
         console.log(error)
       }
