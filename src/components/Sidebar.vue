@@ -21,6 +21,15 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item v-if="isLoggedIn" @click="finishSession">
+        <v-list-item-icon>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -54,25 +63,28 @@ export default {
           icon: 'mdi-account-plus',
           name: 'register',
           requiresLogin: false
-        },
-        {
-          title: 'Logout',
-          icon: 'mdi-logout',
-          name: 'logout',
-          requiresLogin: true
         }
       ],
       mini: true
     }
   },
   computed: {
-    availableOptions: function () {
+    availableOptions () {
       const isLoggedIn = this.$store.getters.isLoggedIn
       return this.items.filter((item) =>
         typeof item.requiresLogin !== 'undefined'
           ? item.requiresLogin === isLoggedIn
           : true
       )
+    },
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
+    }
+  },
+  methods: {
+    finishSession () {
+      this.$store.dispatch('removeToken')
+      this.$router.push({ name: 'home' })
     }
   }
 }

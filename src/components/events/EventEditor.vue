@@ -14,7 +14,7 @@
             <v-text-field v-model="eventProp.description" label="Description"></v-text-field>
           </v-row>
           <v-row cols="12" sm="6" md="4">
-            <v-text-field type="number" v-model="eventProp.maxCapacity" label="Max. Capacity"></v-text-field>
+            <v-text-field type="number" min="0" v-model="eventProp.maxCapacity" label="Max. Capacity"></v-text-field>
           </v-row>
           <v-row cols="12" sm="6" md="4">
             <v-text-field type="datetime-local" v-model="eventProp.date" label="Date"></v-text-field>
@@ -23,7 +23,7 @@
             <v-text-field v-model="eventProp.location" label="Location"></v-text-field>
           </v-row>
           <v-row cols="12" sm="6" md="4">
-            <v-text-field type="number" v-model="eventProp.price" label="Price"></v-text-field>
+            <v-text-field type="number" min="0" v-model="eventProp.price" label="Price"></v-text-field>
           </v-row>
           <v-row cols="12" sm="6" md="4">
             <v-file-input

@@ -1,6 +1,5 @@
 import About from '@/components/About.vue'
 import Login from '@/components/auth/Login.vue'
-import Logout from '@/components/auth/Logout.vue'
 import Register from '@/components/auth/Register.vue'
 import EventGrid from '@/components/events/EventGrid.vue'
 import Home from '@/components/Home.vue'
@@ -29,11 +28,6 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
-  },
-  {
-    path: '/logout',
-    name: 'logout',
-    component: Logout
   },
   {
     path: '/about',

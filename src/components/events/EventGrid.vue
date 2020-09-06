@@ -26,7 +26,12 @@
             >
               <v-card-title v-text="event.title"></v-card-title>
             </v-img>
-            <v-card-subtitle v-text="event.description"></v-card-subtitle>
+            <v-card-text>
+              <v-icon>mdi-clock</v-icon>
+              {{formatDate(event.date)}}
+              <v-icon>mdi-map-marker</v-icon>
+              {{event.location}}
+            </v-card-text>
             <v-card-actions>
               <v-btn v-if="isEditable(event)" @click="editEventDialog(event)" icon>
                 <v-icon>mdi-pencil</v-icon>
@@ -53,6 +58,7 @@
 <script>
 import EventDetail from './EventDetail.vue'
 import EventEditor from './EventEditor'
+import moment from 'moment'
 
 export default {
   components: {
@@ -69,7 +75,9 @@ export default {
   }),
   created () {
     this.$store.dispatch('retrieveEvents')
-    this.$store.dispatch('retrieveTickets', this.$store.getters.getUserId)
+    if (this.$store.getters.isLoggedIn) {
+      this.$store.dispatch('retrieveTickets', this.$store.getters.getUserId)
+    }
   },
   computed: {
     retrieveEvents () {
@@ -84,8 +92,11 @@ export default {
       this.searchText = event
     },
     ticketsPurchased (eventId) {
-      const userTickets = this.$store.getters.listTickets
-      return userTickets.some((ticket) => ticket.eventId === eventId)
+      if (this.$store.getters.isLoggedIn) {
+        const userTickets = this.$store.getters.listTickets
+        return userTickets.some((ticket) => ticket.eventId === eventId)
+      }
+      return false
     },
     detailDialog (event) {
       this.currentEvent = event
@@ -116,6 +127,9 @@ export default {
     deleteItem (event) {
       confirm('Are you sure you want to delete this item?') &&
         this.$store.dispatch('deleteEvent', event.id)
+    },
+    formatDate (date) {
+      return moment(date).format('lll')
     }
   }
 }

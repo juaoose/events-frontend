@@ -16,7 +16,7 @@
       </v-card-subtitle>
       <v-card-subtitle>
         <b>When:</b>
-        {{eventProp.date}}
+        {{formatDate(eventProp.date)}}
       </v-card-subtitle>
       <v-card-subtitle>
         <b>Where:</b>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'event-dialog',
   props: {
@@ -66,6 +68,9 @@ export default {
       const userId = this.$store.getters.getUserId
       const newTicket = { eventId: event.id, buyerId: userId }
       this.$store.dispatch('createTicket', newTicket)
+    },
+    formatDate (date) {
+      return moment(date).format('lll')
     }
   }
 }
