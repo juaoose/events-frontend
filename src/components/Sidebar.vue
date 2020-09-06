@@ -37,13 +37,11 @@ export default {
           title: "Home",
           icon: "mdi-home-city",
           name: "home",
-          requiresLogin: false,
         },
         {
           title: "Events",
           icon: "mdi-calendar",
           name: "events",
-          requiresLogin: false,
         },
         {
           title: "My events",
@@ -54,7 +52,7 @@ export default {
         {
           title: "Tickets",
           icon: "mdi-ticket",
-          name: "segments",
+          name: "tickets",
           requiresLogin: true,
         },
         {
@@ -76,7 +74,11 @@ export default {
   computed: {
     availableOptions: function () {
       const isLoggedIn = this.$store.getters.isLoggedIn;
-      return this.items.filter((item) => item.requiresLogin === isLoggedIn);
+      return this.items.filter((item) =>
+        typeof item.requiresLogin !== "undefined"
+          ? item.requiresLogin === isLoggedIn
+          : true
+      );
     },
   },
 };

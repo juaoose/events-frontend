@@ -5,40 +5,7 @@ const EVENTS_BASE_PATH = '/api/events/'
 
 export default {
   state: {
-    events: [{
-      id: "3",
-      title: "Horse Race #2",
-      organizer: "The British Horseracing Authority",
-      maxCapacity: "20000",
-      price: "29.99",
-      date: "2020-10-23T02:10:25.000Z",
-      location: "Aintree Racecourse"
-    },
-    {
-      title: "Favorite road trips",
-      src: "https://cdn.vuetifyjs.com/images/cards/road.jpg",
-      flex: 3,
-    },
-    {
-      title: "Best airlines3",
-      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
-      flex: 3,
-    },
-    {
-      title: "Best airlines1",
-      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
-      flex: 3,
-    },
-    {
-      title: "Best airlines2",
-      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
-      flex: 3,
-    },
-    {
-      title: "Best airlinesasdas",
-      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
-      flex: 3,
-    }]
+    events: []
   },
   getters: {
     listEvents(state) {

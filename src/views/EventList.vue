@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="retrieveEvents" sort-by="calories" class="elevation-1">
+  <v-data-table :headers="headers" :items="retrieveEvents" sort-by="date" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>Events</v-toolbar-title>
@@ -23,19 +23,20 @@
                   <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
                 </v-row>
                 <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.maxCapacity" label="Max. Capacity"></v-text-field>
+                  <v-text-field
+                    type="number"
+                    v-model="editedItem.maxCapacity"
+                    label="Max. Capacity"
+                  ></v-text-field>
                 </v-row>
                 <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.date" label="Date"></v-text-field>
+                  <v-text-field type="datetime-local" v-model="editedItem.date" label="Date"></v-text-field>
                 </v-row>
                 <v-row cols="12" sm="6" md="4">
                   <v-text-field v-model="editedItem.location" label="Location"></v-text-field>
                 </v-row>
                 <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.price" label="Price"></v-text-field>
-                </v-row>
-                <v-row cols="12" sm="6" md="4">
-                  <v-text-field v-model="editedItem.currency" label="Currency"></v-text-field>
+                  <v-text-field type="number" v-model="editedItem.price" label="Price"></v-text-field>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -49,13 +50,16 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.epoch="{item}">{{createDate(item.epoch)}}</template>
+    <template v-slot:item.epoch="{ item }">{{createDate(item.epoch)}}</template>
     <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+      <v-icon small color="red" @click="deleteItem(item)">mdi-delete</v-icon>
+    </template>
+    <template v-slot:item.image="{ item }">
+      <v-btn icon :href="item.image" target="_blank">Open</v-btn>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+      <div>No events found</div>
     </template>
   </v-data-table>
 </template>
@@ -71,9 +75,11 @@ export default {
         sortable: false,
         value: "title",
       },
+      { text: "Description", sortable: false, value: "description" },
       { text: "Date", value: "date" },
       { text: "Max Capacity", value: "maxCapacity" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Image", sortable: false, value: "image" },
+      { text: "Actions", sortable: false, value: "actions" },
     ],
     editedIndex: -1,
     editedItem: {
@@ -83,17 +89,17 @@ export default {
       description: "",
       maxCapacity: 0,
       price: 0,
-      currency: "USD",
       organizer: "LaMonta",
+      image: "",
     },
     defaultItem: {
       title: "",
-      date: 0,
+      date: Date.now(),
       description: "",
       maxCapacity: 0,
       price: 0,
-      currency: "USD",
       organizer: "LaMonta",
+      image: "",
     },
   }),
 
@@ -138,7 +144,7 @@ export default {
     },
 
     save() {
-      console.log("editedIndex " + this.editedIndex);
+      console.log(this.editedItem);
       if (this.editedIndex === 1) {
         this.$store.dispatch("updateEvent", this.editedItem);
       } else {
