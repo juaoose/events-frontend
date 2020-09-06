@@ -8,6 +8,7 @@
     </v-toolbar>
 
     <v-container fluid>
+      <EventEditor :eventProp="currentEvent" :enabledProp="editorDialog" :newEvent="newEvent" @close="editorDialog=false"/>
       <EventDetail :eventProp="currentEvent" :enabledProp="dialog" @close="dialog=false" />
       <v-row>
         <v-col v-for="event in retrieveEvents" :key="event.title" :cols="flex">
@@ -22,14 +23,14 @@
             </v-img>
             <v-card-subtitle v-text="event.description"></v-card-subtitle>
             <v-card-actions>
-              <v-btn v-if="isEditable(event)" icon>
+              <v-btn v-if="isEditable(event)" @click="editEventDialog(event)" icon>
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-btn v-if="isEditable(event)" @click="deleteItem(event)" icon>
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn @click="showDetail(event)" text>Details</v-btn>
+              <v-btn @click="detailDialog(event)" text>Details</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -38,23 +39,20 @@
   </div>
 </template>
 
-<style>
-.icon-corner {
-  position: absolute;
-  z-index: 9999;
-  top: 100;
-}
-</style>
-
 <script>
 import EventDetail from './EventDetail.vue'
+import EventEditor from './EventEditor'
+
 export default {
   components: {
-    EventDetail
+    EventDetail,
+    EventEditor
   },
   data: () => ({
     currentEvent: {},
+    newEvent: true,
     dialog: false,
+    editorDialog: false,
     searchText: '',
     flex: 3
   }),
@@ -71,9 +69,28 @@ export default {
     filter (event) {
       this.searchText = event
     },
-    showDetail (event) {
+    detailDialog (event) {
       this.currentEvent = event
       this.dialog = true
+    },
+    editEventDialog (event) {
+      this.currentEvent = event
+      this.newEvent = false
+      this.editorDialog = true
+    },
+    newEventDialog () {
+      this.currentEvent = {
+        title: '',
+        date: Date.now(),
+        description: '',
+        maxCapacity: 0,
+        price: 0,
+        organizer: this.$store.getters.getUserId,
+        image: '',
+        encodedImage: ''
+      }
+      this.newEvent = true
+      this.editorDialog = true
     },
     isEditable (event) {
       return this.$store.getters.getUserId === event.organizer
