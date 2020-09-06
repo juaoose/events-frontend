@@ -44,12 +44,6 @@ export default {
           name: 'events'
         },
         {
-          title: 'Tickets',
-          icon: 'mdi-ticket',
-          name: 'tickets',
-          requiresLogin: true
-        },
-        {
           title: 'Login',
           icon: 'mdi-login',
           name: 'login',

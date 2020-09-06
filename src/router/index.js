@@ -4,7 +4,6 @@ import Logout from '@/components/auth/Logout.vue'
 import Register from '@/components/auth/Register.vue'
 import EventGrid from '@/components/events/EventGrid.vue'
 import Home from '@/components/Home.vue'
-import Tickets from '@/components/Tickets.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -20,11 +19,6 @@ const routes = [
     path: '/events',
     name: 'events',
     component: EventGrid
-  },
-  {
-    path: '/tickets',
-    name: 'tickets',
-    component: Tickets
   },
   {
     path: '/login',
