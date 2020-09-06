@@ -62,6 +62,12 @@ export default {
           requiresLogin: false,
         },
         {
+          title: "Register",
+          icon: "mdi-account-plus",
+          name: "register",
+          requiresLogin: false,
+        },
+        {
           title: "Logout",
           icon: "mdi-logout",
           name: "logout",

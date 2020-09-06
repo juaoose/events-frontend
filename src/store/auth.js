@@ -34,6 +34,13 @@ export default {
 
   },
   actions: {
+    async register(context, user) {
+      await axios.post('/api/users/', {
+        username: user.username,
+        email: user.email,
+        password: user.password
+      })
+    },
     async retrieveToken(context, credentials) {
       const response = await axios.post('/api/users/login', {
         username: credentials.username,

@@ -11,17 +11,26 @@
         <v-col cols="12" sm="8" md="4">
           <v-card class="elevation-12">
             <v-toolbar color="primary" dark flat>
-              <v-toolbar-title>Login</v-toolbar-title>
+              <v-toolbar-title>Create an account</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text>
-              <v-form id="login-form" @submit.prevent="login">
+              <v-alert v-if="showErrorAlert" outlined type="error">{{alertMessage}}</v-alert>
+              <v-form id="register-form" @submit.prevent="register">
                 <v-text-field
                   label="Login"
                   name="login"
                   prepend-icon="mdi-account"
                   type="text"
                   v-model="username"
+                ></v-text-field>
+
+                <v-text-field
+                  label="Email"
+                  name="email"
+                  prepend-icon="mdi-email"
+                  type="email"
+                  v-model="email"
                 ></v-text-field>
 
                 <v-text-field
@@ -32,10 +41,20 @@
                   type="password"
                   v-model="password"
                 ></v-text-field>
+
+                <v-text-field
+                  id="password-repeat"
+                  label="Repeat password"
+                  name="passwordRepeat"
+                  prepend-icon="mdi-lock"
+                  type="password"
+                  v-model="passwordRepeat"
+                  @input="verifyPasswords"
+                ></v-text-field>
               </v-form>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn type="submit" form="login-form" color="primary">Login</v-btn>
+                <v-btn type="submit" form="register-form" color="primary">Register</v-btn>
               </v-card-actions>
             </v-card-text>
           </v-card>
@@ -47,27 +66,41 @@
 
 <script>
 export default {
-  name: "login",
+  name: "register",
   data() {
     return {
       showErrorSnackbar: false,
       errorSnackbarText: "",
+      showErrorAlert: false,
+      alertMessage: "",
       username: "",
+      email: "",
       password: "",
+      passwordRepeat: "",
     };
   },
   methods: {
-    async login() {
+    verifyPasswords() {
+      if (this.passwordRepeat !== this.password) {
+        this.showErrorAlert = true;
+        this.alertMessage = "Passwords must match";
+      } else {
+        this.showErrorAlert = false;
+      }
+    },
+    async register() {
       try {
-        await this.$store.dispatch("retrieveToken", {
+        await this.$store.dispatch("register", {
           username: this.username,
+          email: this.email,
           password: this.password,
         });
-        this.$router.push({ name: "events" });
+        this.$router.push({ name: "login" });
       } catch (error) {
         this.showErrorSnackbar = true;
         this.username = "";
         this.password = "";
+        this.passwordRepeat = "";
         if (error.response.status === 401) {
           this.errorSnackbarText = "Incorrect login information";
         } else {
