@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8081'
+axios.defaults.baseURL = process.env.SERVICE_URL
 const EVENTS_BASE_PATH = '/api/events/'
 
 export default {
