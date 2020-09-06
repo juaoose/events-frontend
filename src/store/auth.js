@@ -48,6 +48,8 @@ export default {
       })
       const token = response.data.token
       localStorage.setItem('access_token', token)
+      localStorage.setItem('user_name', response.data.username)
+      localStorage.setItem('user_id', response.data.id)
       context.commit('retrieveToken', response.data)
       return response
 
@@ -55,6 +57,8 @@ export default {
     removeToken(context) {
       if (context.getters.isLoggedIn) {
         localStorage.removeItem('access_token')
+        localStorage.removeItem('user_name')
+        localStorage.removeItem('user_id')
         context.commit('removeToken')
       }
     }

@@ -8,56 +8,22 @@
     </v-toolbar>
 
     <v-container fluid>
+      <EventDetail :eventProp="currentEvent" :enabledProp="dialog" @close="dialog=false" />
       <v-row>
-        <v-col v-for="card in retrieveEvents" :key="card.title" :cols="flex">
+        <v-col v-for="event in retrieveEvents" :key="event.title" :cols="flex">
           <v-card max-width="350px">
             <v-img
-              :src="card.image"
+              :src="event.image"
               class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
-              <v-card-title v-text="card.title"></v-card-title>
+              <v-card-title v-text="event.title"></v-card-title>
             </v-img>
-            <v-card-subtitle v-text="card.description"></v-card-subtitle>
+            <v-card-subtitle v-text="event.description"></v-card-subtitle>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" :retain-focus="false" width="500">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" text>Get ticket</v-btn>
-                </template>
-
-                <v-card>
-                  <v-img
-                    :src="card.image"
-                    class="white--text align-end"
-                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                    height="200px"
-                  >
-                    <v-card-title>Confirm purchase</v-card-title>
-                  </v-img>
-                  <br />
-                  <v-card-subtitle>
-                    <b>Description:</b>
-                    {{card.description}}
-                  </v-card-subtitle>
-                  <v-card-subtitle>
-                    <b>When:</b>
-                    {{card.date}}
-                  </v-card-subtitle>
-                  <v-card-subtitle>
-                    <b>Where:</b>
-                    {{card.location}}
-                  </v-card-subtitle>
-                  <v-card-text>The cost of the ticket is {{card.price}} USD</v-card-text>
-                  <v-divider></v-divider>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="purchase(card)">Buy</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+              <v-btn @click="showDetail(event)" text>Get ticket</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -67,8 +33,13 @@
 </template>
 
 <script>
+import EventDetail from "./EventDetail.vue";
 export default {
+  components: {
+    EventDetail,
+  },
   data: () => ({
+    currentEvent: {},
     dialog: false,
     searchText: "",
     flex: 3,
@@ -85,13 +56,9 @@ export default {
     filter(event) {
       this.searchText = event;
     },
-    purchase(card) {
-      console.log(card);
-      this.dialog = false;
-      const userId = this.$store.getters.getUserId;
-      const newTicket = { eventId: card.id, buyerId: userId };
-      console.log(newTicket);
-      this.$store.dispatch("createTicket", newTicket);
+    showDetail(event) {
+      this.currentEvent = event;
+      this.dialog = true;
     },
   },
 };
