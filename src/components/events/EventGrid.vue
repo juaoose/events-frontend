@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-toolbar>
-      <v-text-field :v-model="searchText" @input="filter" hide-details single-line></v-text-field>
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
+      <v-text-field :v-model="searchText" @input="filter" hide-details single-line>Search</v-text-field>
+      <v-btn v-if="isLoggedIn" icon @click="newEventDialog()">
+        <v-icon large>mdi-plus-circle</v-icon>
       </v-btn>
     </v-toolbar>
 
@@ -62,8 +62,10 @@ export default {
   computed: {
     retrieveEvents () {
       return this.$store.getters.filteredEvents(this.searchText)
+    },
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
     }
-
   },
   methods: {
     filter (event) {

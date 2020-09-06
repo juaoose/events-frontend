@@ -26,7 +26,13 @@
             <v-text-field type="number" v-model="eventProp.price" label="Price"></v-text-field>
           </v-row>
           <v-row cols="12" sm="6" md="4">
-            <v-file-input accept="image/*" @change="handleImage" label="Image"></v-file-input>
+            <v-file-input
+              :value="selectedFile"
+              accept="image/jpeg"
+              ref="imageInput"
+              @change="handleImage"
+              label="Image"
+            ></v-file-input>
           </v-row>
         </v-container>
       </v-card-text>
@@ -57,6 +63,11 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      selectedFile: {}
+    }
+  },
   computed: {
     show: {
       get () {
@@ -84,10 +95,13 @@ export default {
     },
     close () {
       this.show = false
+      this.selectedFile = null
     },
     async handleImage (event) {
-      const image = await this.readFileAsync(event)
-      this.eventProp.encodedImage = image
+      if (event) {
+        const image = await this.readFileAsync(event)
+        this.eventProp.encodedImage = image
+      }
     },
     readFileAsync (file) {
       return new Promise((resolve, reject) => {
