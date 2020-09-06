@@ -23,8 +23,13 @@ export default {
   },
   actions: {
     async retrieveTickets (context, userId) {
+      const accessToken = localStorage.getItem('access_token')
       try {
-        const response = await axios.get(TICKETS_BASE_PATH + '?userId=' + userId)
+        const response = await axios.get('/api/tickets' + '?userId=' + userId, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
         context.commit('retrieveTickets', response.data)
       } catch (error) {
         console.log(error)

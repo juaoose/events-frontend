@@ -8,7 +8,12 @@
     </v-toolbar>
 
     <v-container fluid>
-      <EventEditor :eventProp="currentEvent" :enabledProp="editorDialog" :newEvent="newEvent" @close="editorDialog=false"/>
+      <EventEditor
+        :eventProp="currentEvent"
+        :enabledProp="editorDialog"
+        :newEvent="newEvent"
+        @close="editorDialog=false"
+      />
       <EventDetail :eventProp="currentEvent" :enabledProp="dialog" @close="dialog=false" />
       <v-row>
         <v-col v-for="event in retrieveEvents" :key="event.title" :cols="flex">
@@ -30,6 +35,12 @@
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
               <v-spacer></v-spacer>
+              <v-tooltip v-if="isLoggedIn && ticketsPurchased(event.id)" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon color="green" dark v-bind="attrs" v-on="on">mdi-calendar-check</v-icon>
+                </template>
+                <span>You have tickets to this event</span>
+              </v-tooltip>
               <v-btn @click="detailDialog(event)" text>Details</v-btn>
             </v-card-actions>
           </v-card>
@@ -58,6 +69,7 @@ export default {
   }),
   created () {
     this.$store.dispatch('retrieveEvents')
+    this.$store.dispatch('retrieveTickets', this.$store.getters.getUserId)
   },
   computed: {
     retrieveEvents () {
@@ -70,6 +82,10 @@ export default {
   methods: {
     filter (event) {
       this.searchText = event
+    },
+    ticketsPurchased (eventId) {
+      const userTickets = this.$store.getters.listTickets
+      return userTickets.some((ticket) => ticket.eventId === eventId)
     },
     detailDialog (event) {
       this.currentEvent = event
