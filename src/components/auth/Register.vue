@@ -66,48 +66,48 @@
 
 <script>
 export default {
-  name: "register",
-  data() {
+  name: 'register',
+  data () {
     return {
       showErrorSnackbar: false,
-      errorSnackbarText: "",
+      errorSnackbarText: '',
       showErrorAlert: false,
-      alertMessage: "",
-      username: "",
-      email: "",
-      password: "",
-      passwordRepeat: "",
-    };
+      alertMessage: '',
+      username: '',
+      email: '',
+      password: '',
+      passwordRepeat: ''
+    }
   },
   methods: {
-    verifyPasswords() {
+    verifyPasswords () {
       if (this.passwordRepeat !== this.password) {
-        this.showErrorAlert = true;
-        this.alertMessage = "Passwords must match";
+        this.showErrorAlert = true
+        this.alertMessage = 'Passwords must match'
       } else {
-        this.showErrorAlert = false;
+        this.showErrorAlert = false
       }
     },
-    async register() {
+    async register () {
       try {
-        await this.$store.dispatch("register", {
+        await this.$store.dispatch('register', {
           username: this.username,
           email: this.email,
-          password: this.password,
-        });
-        this.$router.push({ name: "login" });
+          password: this.password
+        })
+        this.$router.push({ name: 'login' })
       } catch (error) {
-        this.showErrorSnackbar = true;
-        this.username = "";
-        this.password = "";
-        this.passwordRepeat = "";
+        this.showErrorSnackbar = true
+        this.username = ''
+        this.password = ''
+        this.passwordRepeat = ''
         if (error.response.status === 401) {
-          this.errorSnackbarText = "Incorrect login information";
+          this.errorSnackbarText = 'Incorrect login information'
         } else {
-          this.errorSnackbarText = "Unknown login error";
+          this.errorSnackbarText = 'Unknown login error'
         }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

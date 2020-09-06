@@ -33,33 +33,33 @@
 </template>
 
 <script>
-import EventDetail from "./EventDetail.vue";
+import EventDetail from './EventDetail.vue'
 export default {
   components: {
-    EventDetail,
+    EventDetail
   },
   data: () => ({
     currentEvent: {},
     dialog: false,
-    searchText: "",
-    flex: 3,
+    searchText: '',
+    flex: 3
   }),
-  created() {
-    this.$store.dispatch("retrieveEvents");
+  created () {
+    this.$store.dispatch('retrieveEvents')
   },
   computed: {
-    retrieveEvents() {
-      return this.$store.getters.filteredEvents(this.searchText);
-    },
+    retrieveEvents () {
+      return this.$store.getters.filteredEvents(this.searchText)
+    }
   },
   methods: {
-    filter(event) {
-      this.searchText = event;
+    filter (event) {
+      this.searchText = event
     },
-    showDetail(event) {
-      this.currentEvent = event;
-      this.dialog = true;
-    },
-  },
-};
+    showDetail (event) {
+      this.currentEvent = event
+      this.dialog = true
+    }
+  }
+}
 </script>

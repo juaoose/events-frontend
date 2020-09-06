@@ -34,39 +34,39 @@
 
 <script>
 export default {
-  name: "event-dialog",
+  name: 'event-dialog',
   props: {
     eventProp: {
       type: Object,
-      required: true,
+      required: true
     },
     enabledProp: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     show: {
-      get() {
-        return this.enabledProp;
+      get () {
+        return this.enabledProp
       },
-      set(value) {
+      set (value) {
         if (!value) {
-          this.$emit("close");
+          this.$emit('close')
         }
-      },
+      }
     },
-    isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
-    },
+    isLoggedIn () {
+      return this.$store.getters.isLoggedIn
+    }
   },
   methods: {
-    purchase(event) {
-      this.show = false;
-      const userId = this.$store.getters.getUserId;
-      const newTicket = { eventId: event.id, buyerId: userId };
-      this.$store.dispatch("createTicket", newTicket);
-    },
-  },
-};
+    purchase (event) {
+      this.show = false
+      const userId = this.$store.getters.getUserId
+      const newTicket = { eventId: event.id, buyerId: userId }
+      this.$store.dispatch('createTicket', newTicket)
+    }
+  }
+}
 </script>

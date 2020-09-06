@@ -8,7 +8,7 @@ export default {
     events: []
   },
   getters: {
-    listEvents(state) {
+    listEvents (state) {
       return state.events
     },
     filteredEvents: (state) => (title) => {
@@ -20,33 +20,32 @@ export default {
 
   },
   mutations: {
-    createEvent(state, event) {
+    createEvent (state, event) {
       state.events.push(event)
     },
-    editEvent(state, event) {
+    editEvent (state, event) {
       const index = state.events.findIndex(originalEvt => originalEvt.id === event.id)
       state.events.splice(index, 1, event)
     },
-    deleteEvent(state, id) {
+    deleteEvent (state, id) {
       const index = state.events.findIndex(originalEvt => originalEvt.id === id)
       state.events.splice(index, 1)
     },
-    retrieveEvents(state, events) {
-      state.events = events;
+    retrieveEvents (state, events) {
+      state.events = events
     }
 
   },
   actions: {
-    async retrieveEvents(context) {
+    async retrieveEvents (context) {
       try {
         const response = await axios.get(EVENTS_BASE_PATH)
         context.commit('retrieveEvents', response.data)
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     },
-    async createEvent(context, event) {
+    async createEvent (context, event) {
       const accessToken = localStorage.getItem('access_token')
       try {
         const response = await axios.post(EVENTS_BASE_PATH, event, {
@@ -56,12 +55,11 @@ export default {
         })
         event.id = response.data.id
         context.commit('createEvent', event)
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     },
-    async updateEvent(context, event) {
+    async updateEvent (context, event) {
       const accessToken = localStorage.getItem('access_token')
       try {
         await axios.put(EVENTS_BASE_PATH + event.id, event, {
@@ -70,12 +68,11 @@ export default {
           }
         })
         context.commit('editEvent', event)
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     },
-    async deleteEvent(context, id) {
+    async deleteEvent (context, id) {
       const accessToken = localStorage.getItem('access_token')
       try {
         await axios.delete(EVENTS_BASE_PATH + id, {
@@ -84,8 +81,7 @@ export default {
           }
         })
         context.commit('deleteEvent', id)
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     }

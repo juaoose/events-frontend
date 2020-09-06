@@ -47,34 +47,34 @@
 
 <script>
 export default {
-  name: "login",
-  data() {
+  name: 'login',
+  data () {
     return {
       showErrorSnackbar: false,
-      errorSnackbarText: "",
-      username: "",
-      password: "",
-    };
+      errorSnackbarText: '',
+      username: '',
+      password: ''
+    }
   },
   methods: {
-    async login() {
+    async login () {
       try {
-        await this.$store.dispatch("retrieveToken", {
+        await this.$store.dispatch('retrieveToken', {
           username: this.username,
-          password: this.password,
-        });
-        this.$router.push({ name: "events" });
+          password: this.password
+        })
+        this.$router.push({ name: 'events' })
       } catch (error) {
-        this.showErrorSnackbar = true;
-        this.username = "";
-        this.password = "";
+        this.showErrorSnackbar = true
+        this.username = ''
+        this.password = ''
         if (error.response.status === 401) {
-          this.errorSnackbarText = "Incorrect login information";
+          this.errorSnackbarText = 'Incorrect login information'
         } else {
-          this.errorSnackbarText = "Unknown login error";
+          this.errorSnackbarText = 'Unknown login error'
         }
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>

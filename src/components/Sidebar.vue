@@ -27,65 +27,65 @@
 
 <script>
 export default {
-  name: "Sidebar",
+  name: 'Sidebar',
   components: {},
-  data() {
+  data () {
     return {
       drawer: true,
       items: [
         {
-          title: "Home",
-          icon: "mdi-home-city",
-          name: "home",
+          title: 'Home',
+          icon: 'mdi-home-city',
+          name: 'home'
         },
         {
-          title: "Events",
-          icon: "mdi-calendar",
-          name: "events",
+          title: 'Events',
+          icon: 'mdi-calendar',
+          name: 'events'
         },
         {
-          title: "My events",
-          icon: "mdi-calendar",
-          name: "my-events",
-          requiresLogin: true,
+          title: 'My events',
+          icon: 'mdi-calendar',
+          name: 'my-events',
+          requiresLogin: true
         },
         {
-          title: "Tickets",
-          icon: "mdi-ticket",
-          name: "tickets",
-          requiresLogin: true,
+          title: 'Tickets',
+          icon: 'mdi-ticket',
+          name: 'tickets',
+          requiresLogin: true
         },
         {
-          title: "Login",
-          icon: "mdi-login",
-          name: "login",
-          requiresLogin: false,
+          title: 'Login',
+          icon: 'mdi-login',
+          name: 'login',
+          requiresLogin: false
         },
         {
-          title: "Register",
-          icon: "mdi-account-plus",
-          name: "register",
-          requiresLogin: false,
+          title: 'Register',
+          icon: 'mdi-account-plus',
+          name: 'register',
+          requiresLogin: false
         },
         {
-          title: "Logout",
-          icon: "mdi-logout",
-          name: "logout",
-          requiresLogin: true,
-        },
+          title: 'Logout',
+          icon: 'mdi-logout',
+          name: 'logout',
+          requiresLogin: true
+        }
       ],
-      mini: true,
-    };
+      mini: true
+    }
   },
   computed: {
     availableOptions: function () {
-      const isLoggedIn = this.$store.getters.isLoggedIn;
+      const isLoggedIn = this.$store.getters.isLoggedIn
       return this.items.filter((item) =>
-        typeof item.requiresLogin !== "undefined"
+        typeof item.requiresLogin !== 'undefined'
           ? item.requiresLogin === isLoggedIn
           : true
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>

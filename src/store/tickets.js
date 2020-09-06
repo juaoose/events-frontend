@@ -8,30 +8,29 @@ export default {
     tickets: []
   },
   getters: {
-    listTickets(state) {
+    listTickets (state) {
       return state.tickets
     }
   },
   mutations: {
-    createTicket(state, ticket) {
+    createTicket (state, ticket) {
       state.tickets.push(ticket)
     },
-    retrieveTickets(state, tickets) {
-      state.tickets = tickets;
+    retrieveTickets (state, tickets) {
+      state.tickets = tickets
     }
 
   },
   actions: {
-    async retrieveTickets(context, userId) {
+    async retrieveTickets (context, userId) {
       try {
         const response = await axios.get(TICKETS_BASE_PATH + '?userId=' + userId)
         context.commit('retrieveTickets', response.data)
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     },
-    async createTicket(context, ticket) {
+    async createTicket (context, ticket) {
       const accessToken = localStorage.getItem('access_token')
       try {
         const response = await axios.post(TICKETS_BASE_PATH, ticket, {
@@ -41,8 +40,7 @@ export default {
         })
         ticket.id = response.data.id
         context.commit('createTicket', ticket)
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     }

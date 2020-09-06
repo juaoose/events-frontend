@@ -70,96 +70,96 @@ export default {
     dialog: false,
     headers: [
       {
-        text: "Title",
-        align: "start",
+        text: 'Title',
+        align: 'start',
         sortable: false,
-        value: "title",
+        value: 'title'
       },
-      { text: "Description", sortable: false, value: "description" },
-      { text: "Date", value: "date" },
-      { text: "Max Capacity", value: "maxCapacity" },
-      { text: "Image", sortable: false, value: "image" },
-      { text: "Actions", sortable: false, value: "actions" },
+      { text: 'Description', sortable: false, value: 'description' },
+      { text: 'Date', value: 'date' },
+      { text: 'Max Capacity', value: 'maxCapacity' },
+      { text: 'Image', sortable: false, value: 'image' },
+      { text: 'Actions', sortable: false, value: 'actions' }
     ],
     editedIndex: -1,
     editedItem: {
       id: 0,
-      title: "",
+      title: '',
       date: 0,
-      description: "",
+      description: '',
       maxCapacity: 0,
       price: 0,
-      organizer: "LaMonta",
-      image: "",
+      organizer: 'LaMonta',
+      image: ''
     },
     defaultItem: {
-      title: "",
+      title: '',
       date: Date.now(),
-      description: "",
+      description: '',
       maxCapacity: 0,
       price: 0,
-      organizer: "LaMonta",
-      image: "",
-    },
+      organizer: 'LaMonta',
+      image: ''
+    }
   }),
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Event" : "Edit Event";
+    formTitle () {
+      return this.editedIndex === -1 ? 'New Event' : 'Edit Event'
     },
-    retrieveEvents() {
-      return this.$store.getters.listEvents;
-    },
+    retrieveEvents () {
+      return this.$store.getters.listEvents
+    }
   },
 
   watch: {
-    dialog(val) {
-      val || this.close();
-    },
+    dialog (val) {
+      val || this.close()
+    }
   },
 
-  created() {
-    this.$store.dispatch("retrieveEvents");
+  created () {
+    this.$store.dispatch('retrieveEvents')
   },
 
   methods: {
-    editItem(item) {
-      this.editedIndex = 1;
-      console.log(this.editedIndex);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    editItem (item) {
+      this.editedIndex = 1
+      console.log(this.editedIndex)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
     },
 
-    deleteItem(item) {
-      confirm("Are you sure you want to delete this item?") &&
-        this.$store.dispatch("deleteEvent", item.id);
+    deleteItem (item) {
+      confirm('Are you sure you want to delete this item?') &&
+        this.$store.dispatch('deleteEvent', item.id)
     },
 
-    close() {
-      this.dialog = false;
+    close () {
+      this.dialog = false
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
     },
 
-    save() {
-      console.log(this.editedItem);
+    save () {
+      console.log(this.editedItem)
       if (this.editedIndex === 1) {
-        this.$store.dispatch("updateEvent", this.editedItem);
+        this.$store.dispatch('updateEvent', this.editedItem)
       } else {
-        this.$store.dispatch("createEvent", this.editedItem);
+        this.$store.dispatch('createEvent', this.editedItem)
       }
-      this.close();
+      this.close()
     },
 
-    createDate(epoch) {
-      return new Date(epoch * 1000).toLocaleDateString("es-CO");
+    createDate (epoch) {
+      return new Date(epoch * 1000).toLocaleDateString('es-CO')
     },
 
-    seeResults(input) {
-      this.$router.push({ name: "results", params: { eventId: input.id } });
-    },
-  },
-};
+    seeResults (input) {
+      this.$router.push({ name: 'results', params: { eventId: input.id } })
+    }
+  }
+}
 </script>

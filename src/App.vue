@@ -10,15 +10,15 @@
 </template>
 
 <script>
-import Sidebar from "./components/Sidebar";
+import Sidebar from './components/Sidebar'
 
 export default {
-  name: "App",
+  name: 'App',
   components: { Sidebar },
-  data() {
+  data () {
     return {
       //
-    };
-  },
-};
+    }
+  }
+}
 </script>

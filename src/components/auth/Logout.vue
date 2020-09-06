@@ -1,14 +1,14 @@
 <script>
 export default {
-  data() {
+  data () {
     return {
       showSnackbar: false,
-      snackbarText: "",
-    };
+      snackbarText: ''
+    }
   },
-  created() {
-    this.$store.dispatch("removeToken");
-    this.$router.push({ name: "home" });
-  },
-};
+  created () {
+    this.$store.dispatch('removeToken')
+    this.$router.push({ name: 'home' })
+  }
+}
 </script>

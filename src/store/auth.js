@@ -9,24 +9,24 @@ export default {
     token: localStorage.getItem('access_token') || null
   },
   getters: {
-    isLoggedIn(state) {
+    isLoggedIn (state) {
       return state.token !== null
     },
-    getAccessToken(state) {
+    getAccessToken (state) {
       return state.token
     },
-    getUserId(state) {
+    getUserId (state) {
       return state.userId
     }
 
   },
   mutations: {
-    retrieveToken(state, authInfo) {
+    retrieveToken (state, authInfo) {
       state.token = authInfo.token
       state.userId = authInfo.id
       state.userName = authInfo.username
     },
-    removeToken(state) {
+    removeToken (state) {
       state.token = null
       state.userId = null
       state.userName = null
@@ -34,14 +34,14 @@ export default {
 
   },
   actions: {
-    async register(context, user) {
+    async register (context, user) {
       await axios.post('/api/users/', {
         username: user.username,
         email: user.email,
         password: user.password
       })
     },
-    async retrieveToken(context, credentials) {
+    async retrieveToken (context, credentials) {
       const response = await axios.post('/api/users/login', {
         username: credentials.username,
         password: credentials.password
@@ -52,9 +52,8 @@ export default {
       localStorage.setItem('user_id', response.data.id)
       context.commit('retrieveToken', response.data)
       return response
-
     },
-    removeToken(context) {
+    removeToken (context) {
       if (context.getters.isLoggedIn) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('user_name')
