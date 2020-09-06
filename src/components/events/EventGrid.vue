@@ -22,6 +22,12 @@
             </v-img>
             <v-card-subtitle v-text="event.description"></v-card-subtitle>
             <v-card-actions>
+              <v-btn v-if="isEditable(event)" icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn v-if="isEditable(event)" @click="deleteItem(event)" icon>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
               <v-spacer></v-spacer>
               <v-btn @click="showDetail(event)" text>Details</v-btn>
             </v-card-actions>
@@ -31,6 +37,14 @@
     </v-container>
   </div>
 </template>
+
+<style>
+.icon-corner {
+  position: absolute;
+  z-index: 9999;
+  top: 100;
+}
+</style>
 
 <script>
 import EventDetail from './EventDetail.vue'
@@ -51,6 +65,7 @@ export default {
     retrieveEvents () {
       return this.$store.getters.filteredEvents(this.searchText)
     }
+
   },
   methods: {
     filter (event) {
@@ -59,6 +74,13 @@ export default {
     showDetail (event) {
       this.currentEvent = event
       this.dialog = true
+    },
+    isEditable (event) {
+      return this.$store.getters.getUserId === event.organizer
+    },
+    deleteItem (event) {
+      confirm('Are you sure you want to delete this item?') &&
+        this.$store.dispatch('deleteEvent', event.id)
     }
   }
 }

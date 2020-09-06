@@ -89,11 +89,11 @@ export default {
     editedItem: {
       id: 0,
       title: '',
-      date: 0,
+      date: Date.now(),
       description: '',
       maxCapacity: 0,
       price: 0,
-      organizer: 'LaMonta',
+      organizer: 0,
       image: '',
       encodedImage: ''
     },
@@ -103,11 +103,16 @@ export default {
       description: '',
       maxCapacity: 0,
       price: 0,
-      organizer: 'LaMonta',
+      organizer: 0,
       image: '',
       encodedImage: ''
     }
   }),
+
+  mounted () {
+    this.defaultItem.organizer = this.$store.getters.getUserId
+    this.editedItem.organizer = this.$store.getters.getUserId
+  },
 
   computed: {
     formTitle () {
