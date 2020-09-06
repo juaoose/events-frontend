@@ -1,28 +1,68 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = ''
+axios.defaults.baseURL = 'http://localhost:8081'
+const EVENTS_BASE_PATH = '/api/events/'
 
 export default {
   state: {
-    events: []
+    events: [{
+      id: "3",
+      title: "Horse Race #2",
+      organizer: "The British Horseracing Authority",
+      maxCapacity: "20000",
+      price: "29.99",
+      date: "2020-10-23T02:10:25.000Z",
+      location: "Aintree Racecourse"
+    },
+    {
+      title: "Favorite road trips",
+      src: "https://cdn.vuetifyjs.com/images/cards/road.jpg",
+      flex: 3,
+    },
+    {
+      title: "Best airlines3",
+      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
+      flex: 3,
+    },
+    {
+      title: "Best airlines1",
+      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
+      flex: 3,
+    },
+    {
+      title: "Best airlines2",
+      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
+      flex: 3,
+    },
+    {
+      title: "Best airlinesasdas",
+      src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
+      flex: 3,
+    }]
   },
   getters: {
     listEvents(state) {
-      return state.event
+      return state.events
+    },
+    filteredEvents: (state) => (title) => {
+      return state.events.filter(event => event.title.toUpperCase().includes(title.toUpperCase()))
+    },
+    filteredEventsById: (state) => (eventId) => {
+      return state.events.filter((event) => event.id === eventId)
     }
 
   },
   mutations: {
     createEvent(state, event) {
-      state.event.push(event)
+      state.events.push(event)
     },
     editEvent(state, event) {
-      const index = state.event.findIndex(item => item.id == event.id)
-      state.event.splice(index, 1, event)
+      const index = state.events.findIndex(originalEvt => originalEvt.id === event.id)
+      state.events.splice(index, 1, event)
     },
-    removeEvent(state, id) {
-      const index = state.events.findIndex(item => item.id == id)
-      state.event.splice(index, 1)
+    deleteEvent(state, id) {
+      const index = state.events.findIndex(originalEvt => originalEvt.id === id)
+      state.events.splice(index, 1)
     },
     retrieveEvents(state, events) {
       state.events = events;
@@ -30,25 +70,57 @@ export default {
 
   },
   actions: {
-    retrieveEvents(context) {
-      axios.get('/events')
-        .then(response => context.commit('retrieveEvents', response.data))
-        .catch(error => console.log(error))
+    async retrieveEvents(context) {
+      try {
+        const response = await axios.get(EVENTS_BASE_PATH)
+        context.commit('retrieveEvents', response.data)
+      }
+      catch (error) {
+        console.log(error)
+      }
     },
-    createEvent(context, event) {
-      const accessToken = ''
-      axios.post('/events', event, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-        .then(response => context.commit('createEvent', response.data))
-        .catch(error => console.log(error))
+    async createEvent(context, event) {
+      const accessToken = localStorage.getItem('access_token')
+      try {
+        const response = await axios.post(EVENTS_BASE_PATH, event, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        event.id = response.data.id
+        context.commit('createEvent', event)
+      }
+      catch (error) {
+        console.log(error)
+      }
     },
-    deleteEvent(context, id) {
-      axios.delete('/events' + id)
-        .then(context.commit('deleteEvent', id))
-        .catch(error => console.log(error))
+    async updateEvent(context, event) {
+      const accessToken = localStorage.getItem('access_token')
+      try {
+        await axios.put(EVENTS_BASE_PATH + event.id, event, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        context.commit('editEvent', event)
+      }
+      catch (error) {
+        console.log(error)
+      }
+    },
+    async deleteEvent(context, id) {
+      const accessToken = localStorage.getItem('access_token')
+      try {
+        await axios.delete(EVENTS_BASE_PATH + id, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        context.commit('deleteEvent', id)
+      }
+      catch (error) {
+        console.log(error)
+      }
     }
   }
 }

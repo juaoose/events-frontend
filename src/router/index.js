@@ -1,9 +1,10 @@
 import About from '@/views/About.vue'
-import Tickets from '@/views/Tickets.vue'
-import Events from '@/views/Events.vue'
+import EventGrid from '@/views/EventGrid.vue'
+import EventList from '@/views/EventList.vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Logout from '@/views/Logout.vue'
+import Tickets from '@/views/Tickets.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -18,7 +19,12 @@ const routes = [
   {
     path: '/events',
     name: 'events',
-    component: Events
+    component: EventGrid
+  },
+  {
+    path: '/my-events',
+    name: 'my-events',
+    component: EventList
   },
   {
     path: '/tickets',

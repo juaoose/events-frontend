@@ -9,6 +9,9 @@ export default {
   getters: {
     isLoggedIn(state) {
       return state.token !== null
+    },
+    getAccessToken(state) {
+      return state.token
     }
 
   },
