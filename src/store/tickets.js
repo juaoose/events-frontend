@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = process.env.SERVICE_URL
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_URL
 const TICKETS_BASE_PATH = '/api/tickets/'
 
 export default {
