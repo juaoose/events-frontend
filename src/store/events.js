@@ -40,7 +40,9 @@ export default {
     async retrieveEvents (context) {
       try {
         const response = await axios.get(EVENTS_BASE_PATH)
-        context.commit('retrieveEvents', response.data)
+        if (response.data && response.data.events) {
+          context.commit('retrieveEvents', response.data.events)
+        }
       } catch (error) {
         console.log(error)
       }
